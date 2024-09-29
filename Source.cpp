@@ -12,13 +12,57 @@ vector<vector<int>> prime;// вектор для хранения базисов
 
 class SOK {
 private:
-    vector<vector<vector<int>>> matrixsok;
+    vector<vector<vector<int>>> matrixSOK;
     vector<int> basis;
 public:
-    void convertPPS_SOK(vector<vector<int>> z ) {
+    void convertPPS_SOK(vector<vector<int>> z, int maxValue ) {
+        int mult =1 ;
+       
+        bool BR = false;
+        for (auto row : prime) {
+            for (auto val : row) {
+                mult *= val;
+                basis.push_back(val);
+                if (mult > maxValue) {
+                    BR = true;
+                    break;
+                }
+            }
+            if (BR) {
+                break;
+            }
+            else {
+                basis.resize(0);
+                mult = 1;
+            }
+        }
 
+        //cout << "\n\n";
 
+        //for (auto g : basis) {
+        //    cout << g << " ";
+        //}
+
+        cout << "\n" << endl;
+        
+
+       matrixSOK.assign(z.size(), vector<vector<int>>(z.size(), vector<int>(basis.size())));
+
+       for (int raw = 0; raw < z.size(); raw++) {
+           for (int val = 0; val < z.size(); val++) {
+               for (int i = 0; i < basis.size(); i++) {
+                   matrixSOK[raw][val][i] = z[raw][val] % basis[i];
+                   cout << matrixSOK[raw][val][i] << " ";
+               }
+               cout << "    ";
+           }
+           cout << endl;
+       }
+   
     }
+
+    vector<vector<vector<int>>> ReturnSOK() { return matrixSOK; }
+    vector<int>  ReturnBasis() { return basis; }
 };
 class MatrixOperation {
 public:
@@ -66,6 +110,8 @@ int main() {
     setlocale(LC_ALL, "Rus");
     srand(time(NULL));
     MatrixOperation generator;
+    SOK SokMatrix1;
+    SOK SokMatrix2;
 
     vector<vector<int>> matrix1;
     vector<vector<int>> matrix2;
@@ -89,12 +135,6 @@ int main() {
         num.resize(0);
     };
 
-   /* for (auto j : prime) {
-        for (auto t : j) {
-            cout << t << " ";
-        }
-        cout << endl;
-    }*/
 
 
     int size, RandomRangeMin, RandomRangeMax, choose = 0;
@@ -144,6 +184,12 @@ int main() {
                 }
                 cout << endl;
             }
+
+            cout << "\n СОК первой матрицы";
+            SokMatrix1.convertPPS_SOK(matrix1, RandomRangeMax);
+            cout << "\n СОК второй матрицы";
+            SokMatrix2.convertPPS_SOK(matrix1, RandomRangeMax);
+
             break;
         }
         case(2): {
