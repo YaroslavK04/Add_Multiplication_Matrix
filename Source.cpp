@@ -1,14 +1,25 @@
 #include <iostream>
 #include <vector>
 #include<time.h>
+#include<fstream>
+#include<sstream>
+#include <string>
 
 using namespace std;
-vector<vector<int>> matrix1;
-vector<vector<int>> matrix2;
 
-vector<vector<int>> ResultAdd;
-vector<vector<int>> ResultMultiplication;
+vector<vector<int>> prime;// вектор для хранения базисов 
 
+
+class SOK {
+private:
+    vector<vector<vector<int>>> matrixsok;
+    vector<int> basis;
+public:
+    void convertPPS_SOK(vector<vector<int>> z ) {
+
+
+    }
+};
 class MatrixOperation {
 public:
     // Метод для создания квадратной матрицы с рандомными значениями
@@ -55,6 +66,36 @@ int main() {
     setlocale(LC_ALL, "Rus");
     srand(time(NULL));
     MatrixOperation generator;
+
+    vector<vector<int>> matrix1;
+    vector<vector<int>> matrix2;
+
+    vector<vector<int>> ResultAdd;
+    vector<vector<int>> ResultMultiplication;
+
+    ifstream file("BASIS.txt");
+    if (!file) { cout << "ERROR open file\n"; }
+
+    string str;
+    string number;
+    vector<int> num;
+ 
+    while (getline(file, str)) {
+        istringstream iss(str);
+        while (iss >> number) {
+            num.push_back(stoi(number));
+        }
+        prime.push_back(num);
+        num.resize(0);
+    };
+
+   /* for (auto j : prime) {
+        for (auto t : j) {
+            cout << t << " ";
+        }
+        cout << endl;
+    }*/
+
 
     int size, RandomRangeMin, RandomRangeMax, choose = 0;
     while (choose != 4)
@@ -111,6 +152,7 @@ int main() {
         }
         case(3):
             ResultMultiplication = generator.multiplicationMatrix(matrix1, matrix2, size);
+   
             break;
         }
     }
